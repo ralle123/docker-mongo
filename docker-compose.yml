@@ -1,0 +1,30 @@
+version: "3.8"
+services:
+  mongodb:
+    image : mongo
+    container_name: mongodb
+    environment:
+    - PUID=1000
+    - PGID=1000
+    volumes:
+    - /Users/test/code/docker-mongodb/database:/data/db
+    ports:
+    - 27017:27017
+    restart: unless-stopped
+  jupyter:
+      container_name: jhub
+      build:
+        context: .
+        dockerfile: Dockerfile
+      ports:
+        - 8888:8888
+      volumes:
+        - ./notebooks:/home/jovyan/work
+  spark-master:
+    image: bde2020/spark-master:3.1.2-hadoop3.2 #3.2.0-hadoop3.2
+    container_name: spark-master
+    ports:
+      - 8090:8080
+      - 7077:7077
+
+#http://localhost:8090/
